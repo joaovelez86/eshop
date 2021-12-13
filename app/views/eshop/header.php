@@ -3,19 +3,27 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="">
+    <meta name="author" content="">
     <title><?php echo $data['page_title'] ?> | E-Shop Projecto Backend </title>
-    <link href="<?php echo ASSETS ?>eshop/css/bootstrap.min.css" rel="stylesheet">
-    <link href="<?php echo ASSETS ?>eshop/css/font-awesome.min.css" rel="stylesheet">
-    <link href="<?php echo ASSETS ?>eshop/css/prettyPhoto.css" rel="stylesheet">
-    <link href="<?php echo ASSETS ?>eshop/css/price-range.css" rel="stylesheet">
-    <link href="<?php echo ASSETS ?>eshop/css/animate.css" rel="stylesheet">
-	<link href="<?php echo ASSETS ?>eshop/css/main.css" rel="stylesheet">
-	<link href="<?php echo ASSETS ?>eshop/css/responsive.css" rel="stylesheet">    
-    <link rel="shortcut icon" href="<?php echo ASSETS ?>eshop/images/ico/favicon.ico">
-    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="<?php echo ASSETS ?>eshop/images/ico/apple-touch-icon-144-precomposed.png">
-    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="<?php echo ASSETS ?>eshop/images/ico/apple-touch-icon-114-precomposed.png">
-    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="<?php echo ASSETS ?>eshop/images/ico/apple-touch-icon-72-precomposed.png">
-    <link rel="apple-touch-icon-precomposed" href="<?php echo ASSETS ?>eshop/images/ico/apple-touch-icon-57-precomposed.png">
+    <link href="<?php echo ASSETS . THEME ?>css/bootstrap.min.css" rel="stylesheet">
+    <link href="<?php echo ASSETS . THEME ?>css/font-awesome.min.css" rel="stylesheet">
+    <link href="<?php echo ASSETS . THEME ?>css/prettyPhoto.css" rel="stylesheet">
+    <link href="<?php echo ASSETS . THEME ?>css/price-range.css" rel="stylesheet">
+    <link href="<?php echo ASSETS . THEME ?>css/animate.css" rel="stylesheet">
+	<link href="<?php echo ASSETS . THEME ?>css/main.css" rel="stylesheet">
+	<link href="<?php echo ASSETS . THEME ?>css/responsive.css" rel="stylesheet">
+
+	<!--[if lt IE 9]>
+    <script src="<?= ASSETS . THEME ?>js/html5shiv.js"></script>
+    <script src="<?= ASSETS . THEME ?>js/respond.min.js"></script>
+    <![endif]-->   
+
+    <link rel="shortcut icon" href="<?php echo ASSETS . THEME?>images/ico/favicon.ico">
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="<?php echo ASSETS . THEME ?>images/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="<?php echo ASSETS . THEME ?>images/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="<?php echo ASSETS . THEME ?>images/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="<?php echo ASSETS . THEME ?>images/ico/apple-touch-icon-57-precomposed.png">
 </head><!--/head-->
 
 <body>
@@ -32,17 +40,17 @@
 							</ul>
 						</div>
 					</div>
-				
+
 				</div>
 			</div>
 		</div><!--/header_top-->
-		
+
 		<div class="header-middle"><!--header-middle-->
 			<div class="container">
 				<div class="row">
 					<div class="col-sm-4">
 						<div class="logo pull-left">
-							<a href="index.html"><img src="<?php echo ASSETS ?>eshop/images/home/logo.png" alt="" /></a>
+							<a href="index.html"><img src="<?php echo ASSETS . THEME ?>images/home/logo.png" alt="" /></a>
 						</div>
 						<div class="btn-group pull-right">
 							<div class="btn-group">
@@ -55,7 +63,7 @@
 									<li><a href="#">UK</a></li>
 								</ul>
 							</div>
-							
+
 							<div class="btn-group">
 								<button type="button" class="btn btn-default dropdown-toggle usa" data-toggle="dropdown">
 									DOLLAR
@@ -73,16 +81,16 @@
 							<ul class="nav navbar-nav">
 								<li><a href="#"><i class="fa fa-user"></i> Account</a></li>
 								<li><a href="#"><i class="fa fa-star"></i> Wishlist</a></li>
-								<li><a href="checkout.html"><i class="fa fa-crosshairs"></i> Checkout</a></li>
-								<li><a href="cart.html"><i class="fa fa-shopping-cart"></i> Cart</a></li>
-								<li><a href="login.html"><i class="fa fa-lock"></i> Login</a></li>
+								<li><a href="checkout"><i class="fa fa-crosshairs"></i> Checkout</a></li>
+								<li><a href="cart"><i class="fa fa-shopping-cart"></i> Cart</a></li>
+								<li><a href="login"><i class="fa fa-lock"></i> Login</a></li>
 							</ul>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div><!--/header-middle-->
-	
+
 		<div class="header-bottom"><!--header-bottom-->
 			<div class="container">
 				<div class="row">
@@ -97,24 +105,24 @@
 						</div>
 						<div class="mainmenu pull-left">
 							<ul class="nav navbar-nav collapse navbar-collapse">
-								<li><a href="index.html" class="active">Home</a></li>
+								<li><a href="index" class="active">Home</a></li>
 								<li class="dropdown"><a href="#">Shop<i class="fa fa-angle-down"></i></a>
                                     <ul role="menu" class="sub-menu">
-                                        <li><a href="shop.html">Products</a></li>
-										<li><a href="product-details.html">Product Details</a></li> 
-										<li><a href="checkout.html">Checkout</a></li> 
-										<li><a href="cart.html">Cart</a></li> 
-										<li><a href="login.html">Login</a></li> 
+                                        <li><a href="shop">Products</a></li>
+										<li><a href="product-details">Product Details</a></li>
+										<li><a href="checkout">Checkout</a></li>
+										<li><a href="cart">Cart</a></li>
+										<li><a href="login">Login</a></li>
                                     </ul>
-                                </li> 
+                                </li>
 								<li class="dropdown"><a href="#">Blog<i class="fa fa-angle-down"></i></a>
                                     <ul role="menu" class="sub-menu">
-                                        <li><a href="blog.html">Blog List</a></li>
-										<li><a href="blog-single.html">Blog Single</a></li>
+                                        <li><a href="blog">Blog List</a></li>
+										<li><a href="blog-single">Blog Single</a></li>
                                     </ul>
-                                </li> 
-								<li><a href="404.html">404</a></li>
-								<li><a href="contact-us.html">Contact</a></li>
+                                </li>
+								<li><a href="404">404</a></li>
+								<li><a href="contact-us">Contact</a></li>
 							</ul>
 						</div>
 					</div>
