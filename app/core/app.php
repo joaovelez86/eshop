@@ -22,11 +22,12 @@ class App
         require "../app/controllers/" . $this->controller . ".php";
         $this->controller = new $this->controller;
 
-        //se a variavel $url[1] existir converte to lowercase e se o method_exists
-        // destroi o url com unset()
+        /*se a variavel $url[1] existir converte to lowercase e se o method_exists
+        destroi o url com unset() */
         if (isset($url[1])) {
 
             $url[1] = strtolower($url[1]);
+            
             if (method_exists($this->controller, $url[1])) {
                 $this->method = $url[1];
                 unset($url[1]);
