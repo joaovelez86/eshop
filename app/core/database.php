@@ -36,12 +36,14 @@ class Database
 
         if ($result) {
             $data = $statment->fetchAll(PDO::FETCH_OBJ);
+            //conta quantos items tem dentro deste array e retorna um numero
+            if (is_array($data) && count($data) > 0) {
 
-            if (is_array($data)) {
+                //se for 0 vem para aqui
                 return $data;
             }
         }
-
+      //se não for 0 para aqui
         return false;
     }
 

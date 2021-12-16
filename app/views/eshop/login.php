@@ -5,13 +5,16 @@
 	<!--form-->
 	<div class="container">
 		<div class="row" style="text-align: center;">
+
+			<span style="font-size: 20px; color:red;"><?php check_error() ?></span>
+
 			<div class="col-sm-4 col-sm-offset-1" style="float: none;display: inline-block;">
 				<div class="login-form">
 					<!--login form-->
 					<h2>Login to your account</h2>
-					<form action="#">
-						<input type="text" placeholder="Name" />
-						<input type="email" placeholder="Email Address" />
+					<form method="post">
+						<input type="email" name="email" value="<?php echo isset($_POST['email']) ? $_POST['email'] : '';?>" placeholder="Email Address" />
+						<input type="password" name="password" value="<?php echo isset($_POST['password']) ? $_POST['password'] : '';?>" placeholder="Password" />
 						<span>
 							<input type="checkbox" class="checkbox">
 							Keep me signed in
