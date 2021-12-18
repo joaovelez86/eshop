@@ -20,6 +20,10 @@
     <script src="<?= ASSETS . THEME ?>js/respond.min.js"></script>
     <![endif]-->
 
+    
+    <!-- Custom styles for this template -->
+   
+
 	<link rel="shortcut icon" href="<?php echo ASSETS . THEME ?>images/ico/favicon.ico">
 	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="<?php echo ASSETS . THEME ?>images/ico/apple-touch-icon-144-precomposed.png">
 	<link rel="apple-touch-icon-precomposed" sizes="114x114" href="<?php echo ASSETS . THEME ?>images/ico/apple-touch-icon-114-precomposed.png">
@@ -40,8 +44,8 @@
 							<ul class="nav nav-pills">
 								<li><a href="#"><i class="fa fa-phone"></i> +00351 969597640</a></li>
 								<li><a href="#"><i class="fa fa-envelope"></i> info@domain.com</a></li>
-								<?php if (isset($data['user_data'])): ?>
-								<li><a href="#"><i class="fa fa-user"></i> <?= $data['user_data']->full_name ?> </a></li>
+								<?php if (isset($data['user_data'])) : ?>
+									<li><a href="#"><i class="fa fa-user"></i> <?= $data['user_data']->full_name ?> </a></li>
 								<?php endif; ?>
 								<li><a href="https://www.linkedin.com/in/jo%C3%A3o-velez-52276b213/" target="_blank"><i class="fa fa-linkedin" style="color: blue;"></i></a></li>
 							</ul>
@@ -88,15 +92,17 @@
 					<div class="col-sm-8">
 						<div class="shop-menu pull-right">
 							<ul class="nav navbar-nav">
-								<li><a href="#"><i class="fa fa-user"></i> Account</a></li>
+								<?php if (isset($data['user_data']) && $data['user_data']->rank == 'admin') : ?>
+									<li><a href="<?= ROOT ?>profile"><i class="fa fa-user"></i> Account</a></li>
+								<?php endif; ?>
 								<li><a href="#"><i class="fa fa-star"></i> Wishlist</a></li>
 								<li><a href="checkout"><i class="fa fa-crosshairs"></i> Checkout</a></li>
 								<li><a href="cart"><i class="fa fa-shopping-cart"></i> Cart</a></li>
-								
-								<?php if(isset($data['user_data'])): ?>
-									<li><a href="<?=ROOT?>logout"><i class="fa fa-lock"></i> Logout</a></li>
-								<?php else: ?>
- 									<li><a href="<?=ROOT?>login"><i class="fa fa-lock"></i> Login</a></li>
+
+								<?php if (isset($data['user_data'])) : ?>
+									<li><a href="<?= ROOT ?>logout"><i class="fa fa-lock"></i> Logout</a></li>
+								<?php else : ?>
+									<li><a href="<?= ROOT ?>login"><i class="fa fa-lock"></i> Login</a></li>
 								<?php endif; ?>
 							</ul>
 						</div>

@@ -70,7 +70,7 @@
 						</div>
 					</div>
 				</div>
-				
+
 			</div>
 		</div>
 	</div>
@@ -82,8 +82,8 @@
 					<div class="single-widget">
 						<h2 style="color: darkorange;">Services</h2>
 						<ul class="nav nav-pills nav-stacked">
-							<?php if(isset($data['user_data']) && $data['user_data']->rank == 'admin' ): ?>
-							<li><a href="<=ROOT?>admin">Admin</a></li>
+							<?php if (isset($data['user_data']) && $data['user_data']->rank == 'admin') : ?>
+								<li><a href="<?= ROOT ?>admin">Admin</a></li>
 							<?php endif; ?>
 
 						</ul>
