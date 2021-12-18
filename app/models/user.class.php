@@ -13,12 +13,11 @@ class User
         $data['password'] = trim($POST['password']);
         $password2 = trim($POST['password2']);
 
-
         if (empty($data['email']) || !filter_var($POST["email"], FILTER_VALIDATE_EMAIL)) {
             $this->error .= "Please enter a valid email <br>";
         }
 
-        if (empty($data['full_name']) || $data['full_name'] < 8 && $data['full_name'] > 59  || !preg_match("/^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$/u", $data['full_name'])) {
+        if (empty($data['full_name']) || $data['full_name'] < 8 && $data['full_name'] > 59 || !preg_match("/^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$/u", $data['full_name'])) {
             $this->error .= "Please enter a valid name <br>";
         }
 
@@ -51,7 +50,6 @@ class User
 
             $data['url_address'] = $this->get_random_string_max(60);
         }
-
 
         if ($this->error == "") {
             //save rank,url,data e faz tambem a encriptação da password.
@@ -93,30 +91,28 @@ class User
 
         //se o erro estiver vazio,
         if ($this->error == "") {
-            //show($POST); 
+            //show($POST);
             //checka se email já existe na BD
             $sql = "select * from users where email = :email limit 1";
-            $result = $db->read($sql,['email'=> $data['email']]);
+            $result = $db->read($sql, ['email' => $data['email']]);
 
             //se a pass inserida pelo user $_POST for igual a pass encriptada
             if (!empty($result) && password_verify($data['password'], $result[0]->password)) {
-                
+
                 $_SESSION['user_url'] = $result[0]->url_address;
                 header("Location: " . ROOT . "home");
                 die;
-
             } else {
                 $this->error .= "Wrong email or password <br>";
             }
         }
-        //para mostrar ao utilizador os erros. 
+        //para mostrar ao utilizador os erros.
         $_SESSION['error'] = $this->error;
     }
 
     public function get_user($url)
     {
     }
-
 
     private function get_random_string_max($length)
     {
@@ -136,32 +132,54 @@ class User
         return $text;
     }
 
+    //Nesta func faz redirect = falso e allowed para um array vazio
     public function check_login($redirect = false, $allowed = array())
     {
+        $db = Database::getInstance();
+        //confirma o user_url é > 0
         if (count($allowed) > 0) {
-            
-        } else {
-            header("Location: " . ROOT . "login");
-            die;
-        }
-
-        if (isset($_SESSION['user_url'])) {
-            $arr['url'] = $_SESSION['user_url'];
-            $query = "select * from users where url_address = :url limit 1";
-            $db = Database::getInstance();
-
+        //query pelo "rank" do user logado. "Admin" tem autorização, user "Costumer" não tem autorização ao backoffice
+            $arr['url'] = isset($_SESSION['user_url']) ? $_SESSION['user_url'] : '';
+            $query = "select rank from users where url_address = :url limit 1";
             $result = $db->read($query, $arr);
 
             if (is_array($result)) {
-                return $result[0];
+                $result = $result[0];
+
+                if (in_array($result->rank, $allowed)) {
+
+                    return $result;
+
+                } else {
+                    header("Location: " . ROOT . "login");
+                    die;
+                }
+            } else {
+                header("Location: " . ROOT . "login");
+                die;
             }
-        }
-        if ($redirect) {
-         header("Location: " . ROOT . "login");
-         die;
+        } else {
+        
+            if (isset($_SESSION['user_url'])) {
+                $arr = false;
+                $arr['url'] = $_SESSION['user_url'];
+                $query = "select * from users where url_address = :url limit 1";
+
+                $result = $db->read($query, $arr);
+
+                if (is_array($result)) {
+                    return $result[0];
+                }
+            }
+            //se o user url não está ok tem que redirecionar para a página login
+            if ($redirect) {
+                header("Location: " . ROOT . "login");
+                die;
+            }
         }
         return false;
     }
+
 
     public function logout()
     {

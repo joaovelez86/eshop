@@ -47,7 +47,6 @@
 								<?php if (isset($data['user_data'])) : ?>
 									<li><a href="#"><i class="fa fa-user"></i> <?= $data['user_data']->full_name ?> </a></li>
 								<?php endif; ?>
-								<li><a href="https://www.linkedin.com/in/jo%C3%A3o-velez-52276b213/" target="_blank"><i class="fa fa-linkedin" style="color: blue;"></i></a></li>
 							</ul>
 						</div>
 					</div>
