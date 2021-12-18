@@ -6,7 +6,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta name="description" content="">
 	<meta name="author" content="">
-	<title><?php echo $data['page_title'] ?> | E-Shop Projecto Backend </title>
+	<title><?php echo $data['page_title'] ?> | Eshop Projecto Backend </title>
 	<link href="<?php echo ASSETS . THEME ?>css/bootstrap.min.css" rel="stylesheet">
 	<link href="<?php echo ASSETS . THEME ?>css/font-awesome.min.css" rel="stylesheet">
 	<link href="<?php echo ASSETS . THEME ?>css/prettyPhoto.css" rel="stylesheet">
@@ -41,7 +41,7 @@
 								<li><a href="#"><i class="fa fa-phone"></i> +00351 969597640</a></li>
 								<li><a href="#"><i class="fa fa-envelope"></i> info@domain.com</a></li>
 								<?php if (isset($data['user_data'])): ?>
-								<li><a href="#"><i class="fa fa-user"></i> <?= $data['user_data']->name ?> </a></li>
+								<li><a href="#"><i class="fa fa-user"></i> <?= $data['user_data']->full_name ?> </a></li>
 								<?php endif; ?>
 								<li><a href="https://www.linkedin.com/in/jo%C3%A3o-velez-52276b213/" target="_blank"><i class="fa fa-linkedin" style="color: blue;"></i></a></li>
 							</ul>
@@ -92,10 +92,11 @@
 								<li><a href="#"><i class="fa fa-star"></i> Wishlist</a></li>
 								<li><a href="checkout"><i class="fa fa-crosshairs"></i> Checkout</a></li>
 								<li><a href="cart"><i class="fa fa-shopping-cart"></i> Cart</a></li>
-								<?php if (isset($data['user_data'])): ?>
-									<li><a href="logout"><i class="fa fa-lock"></i> Logout</a></li>
-									<?php else: ?>
-								<li><a href="login"><i class="fa fa-lock"></i> Login</a></li>
+								
+								<?php if(isset($data['user_data'])): ?>
+									<li><a href="<?=ROOT?>logout"><i class="fa fa-lock"></i> Logout</a></li>
+								<?php else: ?>
+ 									<li><a href="<?=ROOT?>login"><i class="fa fa-lock"></i> Login</a></li>
 								<?php endif; ?>
 							</ul>
 						</div>

@@ -8,8 +8,7 @@ Class Signup extends Controller
         $data['page_title'] = "Signup";
 
         if ($_SERVER['REQUEST_METHOD'] == "POST") {
-            //show($_POST);
-
+            
            $user = $this->load_model("User");
            $user->signup($_POST);
         } 

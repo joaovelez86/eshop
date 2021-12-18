@@ -13,7 +13,7 @@
 					<!--login form-->
 					<h2>Login to your account</h2>
 					<form method="post">
-						<input type="email" name="email" value="<?php echo isset($_POST['email']) ? $_POST['email'] : '';?>" placeholder="Email Address" />
+						<input type="email" name="email" value="<?php echo isset($_POST['email']) ? $_POST['email'] : '';?>" placeholder="Email Address"  autocomplete=""/>
 						<input type="password" name="password" value="<?php echo isset($_POST['password']) ? $_POST['password'] : '';?>" placeholder="Password" />
 						<span>
 							<input type="checkbox" class="checkbox">

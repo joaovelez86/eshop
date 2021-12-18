@@ -759,4 +759,4 @@
 	</section>
 
 	<!--Faz roteamento para o meu footer app>views>footer.php-->
-	<?php $this->view("footer"); ?>
+	<?php $this->view("footer", $data); ?>

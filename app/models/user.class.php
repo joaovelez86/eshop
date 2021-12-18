@@ -1,6 +1,6 @@
 <?php
 
-Class User
+class User
 {
     private $error = "";
 
@@ -52,6 +52,7 @@ Class User
             $data['url_address'] = $this->get_random_string_max(60);
         }
 
+
         if ($this->error == "") {
             //save rank,url,data e faz tambem a encriptação da password.
             $data['rank'] = "customer";
@@ -75,39 +76,39 @@ Class User
 
     public function login($POST)
     {
+        //falta descobrir o porquê de não fazer login!!!
         $data = array();
         $db = Database::getInstance();
 
         $data['email'] = trim($POST['email']);
         $data['password'] = trim($POST['password']);
 
-
         if (empty($data['email']) || !filter_var($POST["email"], FILTER_VALIDATE_EMAIL)) {
             $this->error .= "Please enter a valid email <br>";
         }
-        //ver se !empty dá erro
-        if (strlen($data['password']) < 8 || empty($data['password'])) {
-            $this->error .= "Password be at least 8 characters long <br>";
+        //Se tiver menos que 8 caract dá erro
+        if (strlen($data['password']) < 8) {
+            $this->error .= "Password must be atleast 8 characters long <br>";
         }
 
+        //se o erro estiver vazio,
         if ($this->error == "") {
-            //Confirma
-            $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
+            //show($POST); 
+            //checka se email já existe na BD
+            $sql = "select * from users where email = :email limit 1";
+            $result = $db->read($sql,['email'=> $data['email']]);
 
-            //checka se email já existe
-            $sql = "select * from users where email = :email && password = :password limit 1";
-            $arr['email'] = $data['email'];
-            $result = $db->read($sql, $data);
-
-            if (is_array($result)) {
+            //se a pass inserida pelo user $_POST for igual a pass encriptada
+            if (!empty($result) && password_verify($data['password'], $result[0]->password)) {
+                
                 $_SESSION['user_url'] = $result[0]->url_address;
                 header("Location: " . ROOT . "home");
                 die;
+
+            } else {
+                $this->error .= "Wrong email or password <br>";
             }
-
-            $this->error .= "Wrong email or password <br>";
         }
-
         //para mostrar ao utilizador os erros. 
         $_SESSION['error'] = $this->error;
     }
@@ -154,11 +155,10 @@ Class User
     public function logout()
     {
         if (isset($_SESSION['user_url'])) {
-         unset($_SESSION['user_url']);
+            unset($_SESSION['user_url']);
         }
 
         header("Location: " . ROOT . "home");
         die;
     }
-
 }
