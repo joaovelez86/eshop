@@ -8,19 +8,22 @@ class User
     {
         $data = array();
         $db = Database::getInstance();
-        $data['full_name'] = trim($POST['full_name']);
+        $data['full_name'] = trim(htmlspecialchars(strip_tags($POST['full_name'])));
         $data['email'] = trim($POST['email']);
-        $data['password'] = trim($POST['password']);
+        $data['password'] = trim(htmlspecialchars(strip_tags($POST['password'])));
         $password2 = trim($POST['password2']);
 
         if (empty($data['email']) || !filter_var($POST["email"], FILTER_VALIDATE_EMAIL)) {
             $this->error .= "Please enter a valid email <br>";
         }
 
-        if (empty($data['full_name']) || $data['full_name'] < 8 && $data['full_name'] > 59 || !preg_match("/^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$/u", $data['full_name'])) {
+        if (
+            empty($data['full_name']) || mb_strlen($data['full_name']) <= 8  || mb_strlen($data['full_name']) >= 60 || !preg_match("/^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$/u", $data['full_name'])
+           
+        ) {
             $this->error .= "Please enter a valid name <br>";
         }
-
+        var_dump($data);
         if ($data['password'] !== $password2) {
             $this->error .= "Passwords do not match <br>";
         }
@@ -138,9 +141,9 @@ class User
         $db = Database::getInstance();
         //confirma o user_url é > 0
         if (count($allowed) > 0) {
-        //query pelo "rank" do user logado. "Admin" tem autorização, user "Costumer" não tem autorização ao backoffice
+            //query por todas as tabelas do user. "Admin" tem autorização, user "Costumer" não tem autorização ao backoffice
             $arr['url'] = isset($_SESSION['user_url']) ? $_SESSION['user_url'] : '';
-            $query = "select rank from users where url_address = :url limit 1";
+            $query = "select * from users where url_address = :url limit 1";
             $result = $db->read($query, $arr);
 
             if (is_array($result)) {
@@ -149,7 +152,6 @@ class User
                 if (in_array($result->rank, $allowed)) {
 
                     return $result;
-
                 } else {
                     header("Location: " . ROOT . "login");
                     die;
@@ -159,7 +161,7 @@ class User
                 die;
             }
         } else {
-        
+
             if (isset($_SESSION['user_url'])) {
                 $arr = false;
                 $arr['url'] = $_SESSION['user_url'];

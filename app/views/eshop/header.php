@@ -42,11 +42,15 @@
 					<div class="col-sm-6">
 						<div class="contactinfo">
 							<ul class="nav nav-pills">
+							
 								<li><a href="#"><i class="fa fa-phone"></i> +00351 969597640</a></li>
 								<li><a href="#"><i class="fa fa-envelope"></i> info@domain.com</a></li>
 								<?php if (isset($data['user_data'])) : ?>
 									<li><a href="#"><i class="fa fa-user"></i> <?= $data['user_data']->full_name ?> </a></li>
 								<?php endif; ?>
+								<?php if (isset($data['user_data']) && $data['user_data']->rank == 'admin') : ?>
+								<li><a style="color:orange;font-size:12px;"href="<?= ROOT ?>admin">Admin</a></li>
+							<?php endif; ?>
 							</ul>
 						</div>
 					</div>

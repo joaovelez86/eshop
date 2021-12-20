@@ -1,4 +1,4 @@
-<footer id="footer" style="height: 50vh;">
+<footer id="footer" style="height: 40vh;">
 	<!--Footer-->
 	<div class="footer-top">
 		<div class="container">

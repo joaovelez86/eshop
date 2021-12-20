@@ -21,7 +21,7 @@
     <!-- Custom styles for this template -->
     <link href="<?php echo ASSETS . THEME  ?>admin/css/style.css" rel="stylesheet">
     <link href="<?php echo ASSETS . THEME  ?>admin/css/style-responsive.css" rel="stylesheet">
-
+    
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
@@ -36,12 +36,12 @@
       TOP BAR CONTENT & NOTIFICATIONS
       *********************************************************************************************************************************************************** -->
         <!--header start-->
-        <header class="header black-bg">
+        <header style="  background-image: linear-gradient(to right, #424A5D ,#424A5D,#ffd777, #ffd777); border-bottom: 1px solid #424A5D;" class="header black-bg">
             <div class="sidebar-toggle-box">
                 <div class="fa fa-bars tooltips" data-placement="right" data-original-title="Toggle Navigation"></div>
             </div>
             <!--logo start-->
-            <a href="<?php echo ROOT?>" class="logo"><b>Admin | eShop </b></a>
+            <a href="<?php echo ROOT?>admin" class="logo"><b>Admin | eShop </b></a>
             <!--logo end-->
             <div class="nav notify-row" id="top_menu">
                 <!--  notification start -->
@@ -49,7 +49,7 @@
                     <!-- settings start -->
                     <li class="dropdown">
                         <a data-toggle="dropdown" class="dropdown-toggle" href="index.html#">
-                            <i class="fa fa-tasks"></i>
+                            <i class="fa fa-tasks" style="color: white;"></i>
                             <span class="badge bg-theme">4</span>
                         </a>
                         <ul class="dropdown-menu extended tasks-bar">
@@ -118,7 +118,7 @@
                     <!-- inbox dropdown start-->
                     <li id="header_inbox_bar" class="dropdown">
                         <a data-toggle="dropdown" class="dropdown-toggle" href="index.html#">
-                            <i class="fa fa-envelope-o"></i>
+                            <i class="fa fa-envelope-o" style="color: white;"></i>
                             <span class="badge bg-theme">5</span>
                         </a>
                         <ul class="dropdown-menu extended inbox">
