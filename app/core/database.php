@@ -5,13 +5,13 @@ class Database
 {
 
 
-    public static $connection;
+    public static $con;
     //na func __construct tenta correr a BD (app>core>config.php) e se não der faz die. 
     public function __construct()
     {
         try {
             $string = DB_TYPE . ":host=" . DB_HOST . ";dbname=" . DB_NAME;
-            self::$connection = new PDO($string, DB_USER, DB_PASS);
+            self::$con = new PDO($string, DB_USER, DB_PASS);
         } catch (PDOException $e) {
 
             die($e->getMessage());
@@ -20,22 +20,29 @@ class Database
 
     public static function getInstance()
     {
-        if (self::$connection) {
+        if (self::$con) {
 
-            return self::$connection;
+            return self::$con;
         }
 
         return $instance = new self();
     }
 
+    public static function newInstance()
+    {
+      
+        return $instance = new self();
+    }
+
+
     // read da Database. function read faz prepare ,depois executa , faz fetch e depois retorna. (function read se estiver á espera de info de volta.)
     public function read($query, $data = array())
     {
-        $statment = self::$connection->prepare($query);
-        $result = $statment->execute($data);
+        $stm = self::$con->prepare($query);
+        $result = $stm->execute($data);
 
         if ($result) {
-            $data = $statment->fetchAll(PDO::FETCH_OBJ);
+            $data = $stm->fetchAll(PDO::FETCH_OBJ);
             //conta quantos items tem dentro deste array e retorna um numero
             if (is_array($data) && count($data) > 0) {
 
@@ -50,8 +57,8 @@ class Database
     // write da Database. function write se não estiver á espera de nenhuma info de volta (delete por exemplo). 
     public function write($query, $data = array())
     {
-        $statment = self::$connection->prepare($query);
-        $result = $statment->execute($data);
+        $stm = self::$con->prepare($query);
+        $result = $stm->execute($data);
 
         if ($result) {
 

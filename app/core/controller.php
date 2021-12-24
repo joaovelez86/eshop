@@ -4,6 +4,10 @@ class Controller
 
     public function view($path, $data = [])
     {
+        //Importa variáveis para a tabela de símbolos a partir de um array
+        extract($data);
+       
+
         //caso o file_exists/$path mostra a view e se não mostrar mostra o 404.php
         if (file_exists("../app/views/" . THEME . $path . ".php")) {
 

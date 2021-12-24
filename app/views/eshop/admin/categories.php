@@ -43,7 +43,6 @@
                         <button type="button" class="btn btn-warning" onclick="show_add_new(event)" style="position:absolute;bottom:10px;left:10px;">Close</button>
                         <button type="button" class="btn btn-primary" onclick="collect_data(event)" style="position:absolute;bottom:10px;right:10px;">Save</button>
                     </form>
-                    <br><br>
                 </div>
 
                 <thead>
@@ -52,17 +51,13 @@
                         <th><i class=" fa fa-edit"></i> Status</th>
                         <th><i class=" fa fa-edit"></i>Action</th>
                     </tr>
+
                 </thead>
                 <tbody id="table_body">
-                    <tr>
-                        <td><a href="basic_table.html#">Company Ltd</a></td>
-                        <td><span class="label label-info label-mini">Enabled</span></td>
-                        <td>
-                            <button class="btn btn-success btn-xs"><i class="fa fa-check"></i></button>
-                            <button class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i></button>
-                            <button class="btn btn-danger btn-xs"><i class="fa fa-trash-o "></i></button>
-                        </td>
-                    </tr>
+                    <?php
+                    echo $tbl_rows;
+                    ?>
+
                 </tbody>
             </table>
         </div><!-- /content-panel -->
@@ -72,8 +67,8 @@
 <script type="text/javascript">
     function show_add_new() {
 
-        var show_add_box = document.querySelector(".add_new");
-        var category_input = document.querySelector("#category");
+        let show_add_box = document.querySelector(".add_new");
+        let category_input = document.querySelector("#category");
 
         if (show_add_box.classList.contains("hide")) {
 
@@ -87,14 +82,14 @@
     }
 
     function collect_data(event) {
-        var category_input = document.querySelector("#category");
+        let category_input = document.querySelector("#category");
 
         if (category_input.value.trim() == "" || !isNaN(category_input.value.trim())) {
 
             alert("Pleaaase,enter a valid category name");
         }
 
-        var data = category_input.value.trim();
+        let data = category_input.value.trim();
 
         send_data({
             data: data,
@@ -104,7 +99,7 @@
 
     function send_data(data = {}) {
 
-        var ajax = new XMLHttpRequest();
+        let ajax = new XMLHttpRequest();
 
         ajax.addEventListener('readystatechange', function() {
 
@@ -120,23 +115,55 @@
 
     function handle_result(result) {
 
-        //alert(result);
         if (result != "") {
+            let obj = JSON.parse(result);
 
-            var obj = JSON.parse(result);
-            if (typeof obj.message_type != "undefined") {
-                if (obj.message_type == "info") {
+            if (typeof obj.data_type != 'undefined') {
 
-                    alert(obj.message);
-                    show_add_new();
+                if (obj.data_type == "add_new") {
+                    if (obj.message_type == "info") {
+                        alert(obj.message);
+                        show_add_new();
 
-                    var table_body = document.querySelector("#table_body");
+                        let table_body = document.querySelector("#table_body");
+                        table_body.innerHTML = obj.data;
+                    } else {
+                        alert(obj.message);
+                    }
+                } else
+                if (obj.data_type == "disable_row") {
+
+                    let table_body = document.querySelector("#table_body");
                     table_body.innerHTML = obj.data;
-                } else {
+
+                } else
+                if (obj.data_type == "delete_row") {
+
+                    let table_body = document.querySelector("#table_body");
+                    table_body.innerHTML = obj.data;
+
                     alert(obj.message);
                 }
             }
         }
+    }
+
+
+    function edit_row(id) {
+        //alert(id);
+        send_data({
+            data_type: ""
+        });
+    }
+
+
+    function disable_row(id, state) {
+
+        send_data({
+            data_type: "disable_row",
+            id: id,
+            current_state: state
+        });
     }
 </script>
 <!--Faz roteamento para o admin footer!-->

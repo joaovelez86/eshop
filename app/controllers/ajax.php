@@ -7,11 +7,13 @@ class Ajax extends Controller
         $data = file_get_contents("php://input");
         $data = json_decode($data);
 
-        if (is_object($data)) {
+        if (is_object($data) && isset($data->data_type)) {
+
+            $DB = Database::getInstance();
+            $category = $this->load_model('Category');
 
             if ($data->data_type == 'add_category') {
                 //add nova category
-                $category = $this->load_model('Category');
                 $check = $category->create($data);
 
                 if ($_SESSION['error'] != "") {
@@ -20,28 +22,47 @@ class Ajax extends Controller
                     $_SESSION['error'] = "";
                     $arr['message_type'] = "error";
                     $arr['data'] = "";
+                    $arr['data_type'] = "add_new";
 
-                    $cats = $category->get_all();
-
-                    if (is_array($cats)) {
-                        foreach ($cats as $cat_row) {
-
-                            echo "<tr>";
-                            foreach ($cat_row as $value) {
-                                echo "<td></td>";
-                            }
-                            echo "</tr>";
-                        }
-                    }
                     echo json_encode($arr);
                 } else {
 
                     $arr['message'] = "Category add successfully!";
                     $arr['message_type'] = "info";
-                    $arr['data'] = "";
+                    $cats = $category->get_all();
+                    $arr['data'] = $category->make_table($cats);
 
                     echo json_encode($arr);
                 }
+            } elseif ($data->data_type == 'disable_row') {
+
+                $disabled = ($data->current_state == "Enabled") ? 1 : 0;
+                $id = $data->id;
+
+                $query = "update categories set disabled = '$disabled' where id = '$id' limit 1";
+                $DB->write($query);
+
+                $arr['message'] = "";
+                $_SESSION['error'] = "";
+                $arr['message_type'] = "info";
+
+                $cats = $category->get_all();
+                $arr['data'] = $category->make_table($cats);
+                $arr['data_type'] = "disable_row";
+
+                echo json_encode($arr);
+            } elseif ($data->data_type == 'delete_row') {
+
+                $category->delete($data->id);
+                $arr['message'] = "Your row was sucessfully deleted";
+                $_SESSION['error'] = "";
+                $arr['message_type'] = "info";
+                
+                $cats = $category->get_all();
+                $arr['data'] = $category->make_table($cats);
+                $arr['data_type'] = "delete_row";
+
+                echo json_encode($arr);
             }
         }
     }
