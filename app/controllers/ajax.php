@@ -9,7 +9,7 @@ class Ajax extends Controller
 
         if (is_object($data) && isset($data->data_type)) {
 
-            $DB = Database::getInstance();
+            $DB = Database::newInstance();
             $category = $this->load_model('Category');
 
             if ($data->data_type == 'add_category') {
@@ -51,7 +51,22 @@ class Ajax extends Controller
                 $arr['data_type'] = "disable_row";
 
                 echo json_encode($arr);
-            } elseif ($data->data_type == 'delete_row') {
+            } elseif ($data->data_type == 'edit_category'){
+                
+                $category->edit($data->id,$data->category);
+                $arr['message'] = "Your row was sucessfully edited";
+                $_SESSION['error'] = "";
+                $arr['message_type'] = "info";
+                
+                $cats = $category->get_all();
+                $arr['data'] = $category->make_table($cats);
+
+                $arr['data_type'] = "edit_category";
+
+                echo json_encode($arr);
+            }
+            elseif ($data->data_type == 'delete_row')
+             {
 
                 $category->delete($data->id);
                 $arr['message'] = "Your row was sucessfully deleted";
@@ -60,6 +75,7 @@ class Ajax extends Controller
                 
                 $cats = $category->get_all();
                 $arr['data'] = $category->make_table($cats);
+
                 $arr['data_type'] = "delete_row";
 
                 echo json_encode($arr);

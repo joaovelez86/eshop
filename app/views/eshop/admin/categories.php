@@ -19,6 +19,14 @@
                         padding: 7px;
                     }
 
+                    .edit_category {
+                        width: 500px;
+                        height: 300px;
+                        background-color: #FFFFFF;
+                        position: absolute;
+                        padding: 7px;
+                    }
+
                     .show {
                         display: block;
                     }
@@ -45,6 +53,24 @@
                     </form>
                 </div>
 
+                <!--Edit categs-->
+                <div class="edit_category hide">
+
+                    <h4 class="mb"><i class="fa fa-angle-right"></i> Edit Category</h4>
+                    <form class="form-horizontal style-form" method="post">
+                        <div class="form-group">
+                            <label class="col-sm-2 col-sm-2 control-label"> Category Name:</label>
+                            <div class="col-sm-10">
+                                <input id="category_edit" name="category" type="text" class="form-control" autofocus>
+                            </div>
+                        </div>
+
+                        <button type="button" class="btn btn-warning" onclick="show_edit_category(0, '',event)" style="position:absolute;bottom:10px;left:10px;">Cancel</button>
+                        <button type="button" class="btn btn-primary" onclick="collect_edit_data(event)" style="position:absolute;bottom:10px;right:10px;">Save</button>
+                    </form>
+                </div>
+
+
                 <thead>
                     <tr>
                         <th><i class="fa fa-bullhorn"></i> Category</th>
@@ -65,10 +91,30 @@
 </div><!-- /row -->
 
 <script type="text/javascript">
+    let EDIT_ID = 0;
+
     function show_add_new() {
 
-        let show_add_box = document.querySelector(".add_new");
+        let show_edit_box = document.querySelector(".add_new");
         let category_input = document.querySelector("#category");
+
+        if (show_edit_box.classList.contains("hide")) {
+
+            show_edit_box.classList.remove("hide");
+            category_input.focus();
+        } else {
+
+            show_edit_box.classList.add("hide");
+            category_input.value = "";
+        }
+    }
+
+    function show_edit_category(id, category) {
+        EDIT_ID = id;
+
+        let show_add_box = document.querySelector(".edit_category");
+        let category_input = document.querySelector("#category_edit");
+        category_input.value = category;
 
         if (show_add_box.classList.contains("hide")) {
 
@@ -81,7 +127,7 @@
         }
     }
 
-    function collect_data(event) {
+    function collect_data(e) {
         let category_input = document.querySelector("#category");
 
         if (category_input.value.trim() == "" || !isNaN(category_input.value.trim())) {
@@ -94,6 +140,23 @@
         send_data({
             data: data,
             data_type: 'add_category'
+        });
+    }
+
+    function collect_edit_data(e) {
+        let category_input = document.querySelector("#category_edit");
+
+        if (category_input.value.trim() == "" || !isNaN(category_input.value.trim())) {
+
+            alert("Pleaaase,enter a valid category name");
+        }
+
+        let data = category_input.value.trim();
+
+        send_data({
+            id: EDIT_ID,
+            category: data,
+            data_type: 'edit_category'
         });
     }
 
@@ -114,6 +177,7 @@
     }
 
     function handle_result(result) {
+        //console.log(result);
 
         if (result != "") {
             let obj = JSON.parse(result);
@@ -131,7 +195,17 @@
                         alert(obj.message);
                     }
                 } else
-                if (obj.data_type == "disable_row") {
+                if (obj.data_type == "edit_category"){
+
+                    show_edit_category(0,'');//false
+                    
+                    let table_body = document.querySelector("#table_body");
+                    table_body.innerHTML = obj.data;
+                    alert(obj.message); 
+
+                }else
+                if (obj.data_type == "disable_row")
+                 {
 
                     let table_body = document.querySelector("#table_body");
                     table_body.innerHTML = obj.data;
@@ -156,6 +230,17 @@
         });
     }
 
+    function delete_row(id) {
+        //alert(id);
+        if (!confirm("Are you sure you want to delete this row?")) {
+            return;
+        }
+
+        send_data({
+            data_type: "delete_row",
+            id: id
+        });
+    }
 
     function disable_row(id, state) {
 
