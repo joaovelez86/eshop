@@ -4,37 +4,37 @@
 <!--Faz roteamento para o admin sidebar!-->
 <?php $this->view("admin/sidebar", $data); ?>
 
+<style type="text/css">
+    .add_new {
+        width: 500px;
+        height: 300px;
+        background-color: #FFFFFF;
+        position: absolute;
+        padding: 7px;
+    }
+
+    .edit_category {
+        width: 500px;
+        height: 300px;
+        background-color: #FFFFFF;
+        position: absolute;
+        padding: 7px;
+    }
+
+    .show {
+        display: block;
+    }
+
+    .hide {
+        display: none;
+    }
+</style>
+
 <div class="row mt">
     <div class="col-md-12">
         <div class="content-panel">
             <table class="table table-striped table-advance table-hover">
                 <h4><i class="fa fa-angle-right"></i> Product Categories <button class="btn btn-primary btn-xs" onclick="show_add_new(event)"><i class="fa fa-plus"></i> Add New</button></h4>
-
-                <style type="text/css">
-                    .add_new {
-                        width: 500px;
-                        height: 300px;
-                        background-color: #FFFFFF;
-                        position: absolute;
-                        padding: 7px;
-                    }
-
-                    .edit_category {
-                        width: 500px;
-                        height: 300px;
-                        background-color: #FFFFFF;
-                        position: absolute;
-                        padding: 7px;
-                    }
-
-                    .show {
-                        display: block;
-                    }
-
-                    .hide {
-                        display: none;
-                    }
-                </style>
 
                 <!--Adicionar nova categoria-->
                 <div class="add_new hide">
@@ -45,6 +45,22 @@
                             <label class="col-sm-2 col-sm-2 control-label"> Category Name:</label>
                             <div class="col-sm-10">
                                 <input id="category" name="category" type="text" class="form-control" autofocus>
+                            </div>
+                        </div>
+                        <br><br style="clear: both;">
+                        <div class="form-group">
+                            <label class="col-sm-2 col-sm-2 control-label"> Parent (optional):</label>
+                            <div class="col-sm-10">
+                                <select id="parent" name="parent" class="form-control">
+                                    <option></option>
+                                    <?php if (is_array($categories)) : ?>
+                                        <?php foreach ($categories as $categ) : ?>
+
+                                            <option value="<?= $categ->id ?>"><?= $categ->category ?></option>
+
+                                        <?php endforeach; ?>
+                                    <?php endif; ?>
+                                </select>
                             </div>
                         </div>
 
@@ -64,6 +80,22 @@
                                 <input id="category_edit" name="category" type="text" class="form-control" autofocus>
                             </div>
                         </div>
+                        <br><br style="clear: both;">
+                        <div class="form-group">
+                            <label class="col-sm-2 col-sm-2 control-label"> Parent (optional):</label>
+                            <div class="col-sm-10">
+                                <select id="parent_edit" name="parent" class="form-control">
+                                    <option></option>
+                                    <?php if (is_array($categories)) : ?>
+                                        <?php foreach ($categories as $categ) : ?>
+
+                                            <option value="<?= $categ->id ?>"><?= $categ->category ?></option>
+
+                                        <?php endforeach; ?>
+                                    <?php endif; ?>
+                                </select>
+                            </div>
+                        </div>
 
                         <button type="button" class="btn btn-warning" onclick="show_edit_category(0, '',event)" style="position:absolute;bottom:10px;left:10px;">Cancel</button>
                         <button type="button" class="btn btn-primary" onclick="collect_edit_data(event)" style="position:absolute;bottom:10px;right:10px;">Save</button>
@@ -74,8 +106,9 @@
                 <thead>
                     <tr>
                         <th><i class="fa fa-bullhorn"></i> Category</th>
+                        <th><i class=" fa fa-edit"></i> Parent</th>
                         <th><i class=" fa fa-edit"></i> Status</th>
-                        <th><i class=" fa fa-edit"></i>Action</th>
+                        <th><i class=" fa fa-edit"></i> Action</th>
                     </tr>
 
                 </thead>
@@ -109,12 +142,16 @@
         }
     }
 
-    function show_edit_category(id, category) {
+    function show_edit_category(id, category,parent) {
         EDIT_ID = id;
 
         let show_add_box = document.querySelector(".edit_category");
+
         let category_input = document.querySelector("#category_edit");
         category_input.value = category;
+
+        let parent_input = document.querySelector("#parent_edit");
+        parent_input.value = parent;
 
         if (show_add_box.classList.contains("hide")) {
 
@@ -132,30 +169,49 @@
 
         if (category_input.value.trim() == "" || !isNaN(category_input.value.trim())) {
 
-            alert("Pleaaase,enter a valid category name");
+            alert("Please,enter a valid category name");
         }
 
-        let data = category_input.value.trim();
+        let parent_input = document.querySelector("#parent");
+
+        if (isNaN(parent_input.value.trim())) {
+
+            alert("Please,enter a valid category name");
+        }
+
+        let category = category_input.value.trim();
+        let parent = parent_input.value.trim();
 
         send_data({
-            data: data,
+            category: category,
+            parent: parent,
             data_type: 'add_category'
         });
     }
 
     function collect_edit_data(e) {
+
         let category_input = document.querySelector("#category_edit");
 
         if (category_input.value.trim() == "" || !isNaN(category_input.value.trim())) {
 
-            alert("Pleaaase,enter a valid category name");
+            alert("Please,enter a valid category name");
         }
 
-        let data = category_input.value.trim();
+        let parent_input = document.querySelector("#parent_edit");
+
+        if (isNaN(parent_input.value.trim())) {
+
+            alert("Please,enter a valid category name");
+        }
+
+        let category = category_input.value.trim();
+        let parent = parent_input.value.trim();
 
         send_data({
             id: EDIT_ID,
-            category: data,
+            category: category,
+            parent: parent,
             data_type: 'edit_category'
         });
     }
@@ -172,7 +228,7 @@
 
         });
 
-        ajax.open("POST", "<?= ROOT ?>ajax", true);
+        ajax.open("POST", "<?= ROOT ?>ajax_category", true);
         ajax.send(JSON.stringify(data));
     }
 
@@ -195,17 +251,16 @@
                         alert(obj.message);
                     }
                 } else
-                if (obj.data_type == "edit_category"){
+                if (obj.data_type == "edit_category") {
 
-                    show_edit_category(0,'');//false
-                    
+                    show_edit_category(0, '','',false);
+
                     let table_body = document.querySelector("#table_body");
                     table_body.innerHTML = obj.data;
-                    alert(obj.message); 
+                    alert(obj.message);
 
-                }else
-                if (obj.data_type == "disable_row")
-                 {
+                } else
+                if (obj.data_type == "disable_row") {
 
                     let table_body = document.querySelector("#table_body");
                     table_body.innerHTML = obj.data;

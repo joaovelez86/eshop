@@ -1,9 +1,11 @@
 <?php
-class Ajax extends Controller
+class Ajax_category extends Controller
 {
     public function index()
     {
         //echo "enviado atraves do ajax controller";
+        $_SESSION['error'] = "";
+        
         $data = file_get_contents("php://input");
         $data = json_decode($data);
 
@@ -31,6 +33,7 @@ class Ajax extends Controller
                     $arr['message_type'] = "info";
                     $cats = $category->get_all();
                     $arr['data'] = $category->make_table($cats);
+                    $arr['data_type'] = "add_new";
 
                     echo json_encode($arr);
                 }
@@ -51,9 +54,10 @@ class Ajax extends Controller
                 $arr['data_type'] = "disable_row";
 
                 echo json_encode($arr);
+                
             } elseif ($data->data_type == 'edit_category'){
                 
-                $category->edit($data->id,$data->category);
+                $category->edit($data);
                 $arr['message'] = "Your row was sucessfully edited";
                 $_SESSION['error'] = "";
                 $arr['message_type'] = "info";
