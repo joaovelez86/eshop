@@ -1,5 +1,5 @@
 <?php
-
+//cria esta function para usar em toda a app
 function show($data)
 {
     echo "<pre>";
@@ -16,4 +16,9 @@ function check_error()
 		echo $_SESSION['error'];
 		unset($_SESSION['error']);
 	}
+}
+
+//cria esta function para usar em toda a app
+function esc($data){
+	return addslashes($data);
 }

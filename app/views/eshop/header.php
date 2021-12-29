@@ -20,9 +20,9 @@
     <script src="<?= ASSETS . THEME ?>js/respond.min.js"></script>
     <![endif]-->
 
-    
-    <!-- Custom styles for this template -->
-   
+
+	<!-- Custom styles for this template -->
+
 
 	<link rel="shortcut icon" href="<?php echo ASSETS . THEME ?>images/ico/favicon.ico">
 	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="<?php echo ASSETS . THEME ?>images/ico/apple-touch-icon-144-precomposed.png">
@@ -42,15 +42,15 @@
 					<div class="col-sm-6">
 						<div class="contactinfo">
 							<ul class="nav nav-pills">
-							
+
 								<li><a href="#"><i class="fa fa-phone"></i> +00351 969597640</a></li>
 								<li><a href="#"><i class="fa fa-envelope"></i> info@domain.com</a></li>
 								<?php if (isset($data['user_data'])) : ?>
 									<li><a href="#"><i class="fa fa-user"></i> <?= $data['user_data']->full_name ?> </a></li>
 								<?php endif; ?>
 								<?php if (isset($data['user_data']) && $data['user_data']->rank == 'admin') : ?>
-								<li><a style="color:orange;font-size:12px;"href="<?= ROOT ?>admin">Admin</a></li>
-							<?php endif; ?>
+									<li><a style="color:orange;font-size:12px;" href="<?= ROOT ?>admin">Admin</a></li>
+								<?php endif; ?>
 							</ul>
 						</div>
 					</div>
@@ -99,8 +99,8 @@
 									<li><a href="<?= ROOT ?>profile"><i class="fa fa-user"></i> Account</a></li>
 								<?php endif; ?>
 								<li><a href="#"><i class="fa fa-star"></i> Wishlist</a></li>
-								<li><a href="checkout"><i class="fa fa-crosshairs"></i> Checkout</a></li>
-								<li><a href="cart"><i class="fa fa-shopping-cart"></i> Cart</a></li>
+								<li><a href="<?=ROOT?>checkout"><i class="fa fa-crosshairs"></i> Checkout</a></li>
+								<li><a href="<?=ROOT?>cart"><i class="fa fa-shopping-cart"></i> Cart</a></li>
 
 								<?php if (isset($data['user_data'])) : ?>
 									<li><a href="<?= ROOT ?>logout"><i class="fa fa-lock"></i> Logout</a></li>
@@ -130,24 +130,19 @@
 						</div>
 						<div class="mainmenu pull-left">
 							<ul class="nav navbar-nav collapse navbar-collapse">
-								<li><a href="index" class="active">Home</a></li>
+								<li><a href="<?=ROOT?>index" class="active">Home</a></li>
 								<li class="dropdown"><a href="#">Shop<i class="fa fa-angle-down"></i></a>
 									<ul role="menu" class="sub-menu">
-										<li><a href="shop">Products</a></li>
-										<li><a href="product-details">Product Details</a></li>
-										<li><a href="checkout">Checkout</a></li>
-										<li><a href="cart">Cart</a></li>
-										<li><a href="login">Login</a></li>
+										<li><a href="<?=ROOT?>shop">Products</a></li>
+										<li><a href="<?=ROOT?>product-details">Product Details</a></li>
+										<li><a href="<?=ROOT?>checkout">Checkout</a></li>
+										<li><a href="<?=ROOT?>cart">Cart</a></li>
+										<li><a href="<?=ROOT?>login">Login</a></li>
 									</ul>
 								</li>
-								<li class="dropdown"><a href="#">Blog<i class="fa fa-angle-down"></i></a>
-									<ul role="menu" class="sub-menu">
-										<li><a href="blog">Blog List</a></li>
-										<li><a href="blog-single">Blog Single</a></li>
-									</ul>
-								</li>
-								<li><a href="404">404</a></li>
-								<li><a href="contact-us">Contact</a></li>
+
+								<li><a href="<?=ROOT?>404">404</a></li>
+								<li><a href="<?=ROOT?>contact-us">Contact</a></li>
 							</ul>
 						</div>
 					</div>
@@ -162,3 +157,13 @@
 		<!--/header-bottom-->
 	</header>
 	<!--/header-->
+
+	<style type="text/css">
+		.product-image {
+			transition: all 1s ease;
+		}
+
+		.product-image:hover {
+			transform: scale(1.5);
+		}
+	</style>
