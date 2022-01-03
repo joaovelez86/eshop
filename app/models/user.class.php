@@ -77,7 +77,6 @@ class User
 
     public function login($POST)
     {
-        //falta descobrir o porquê de não fazer login!!!
         $data = array();
         $db = Database::getInstance();
 
@@ -114,8 +113,61 @@ class User
     }
 
     public function get_user($url)
-    {
-    }
+	{
+
+		$db = Database::newInstance();
+		$arr = false;
+
+		$arr['url'] = addslashes($url);
+		$query = "select * from users where url_address = :url limit 1";
+
+		$result = $db->read($query,$arr);
+		
+		if(is_array($result))
+		{
+			return $result[0];
+		}
+
+		return false;
+	}
+
+    public function get_customers()
+	{
+
+		$db = Database::newInstance();
+		$arr = false;
+
+		$arr['rank'] = "customer";
+		$query = "select * from users where rank = :rank ";
+
+		$result = $db->read($query,$arr);
+		
+		if(is_array($result))
+		{
+			return $result;
+		}
+
+		return false;
+	}
+	
+	public function get_admins()
+	{
+
+		$db = Database::newInstance();
+		$arr = false;
+
+		$arr['rank'] = "admin";
+		$query = "select * from users where rank = :rank ";
+
+		$result = $db->read($query,$arr);
+		
+		if(is_array($result))
+		{
+			return $result;
+		}
+
+		return false;
+	}
 
     private function get_random_string_max($length)
     {
@@ -146,41 +198,46 @@ class User
             $query = "select * from users where url_address = :url limit 1";
             $result = $db->read($query, $arr);
 
-            if (is_array($result)) {
-                $result = $result[0];
+            if(is_array($result))
+			{
+				$result = $result[0];
+				if(in_array($result->rank, $allowed)){
 
-                if (in_array($result->rank, $allowed)) {
+					return $result;
+				}
 
-                    return $result;
-                } else {
-                    header("Location: " . ROOT . "login");
-                    die;
-                }
-            } else {
-                header("Location: " . ROOT . "login");
-                die;
-            }
-        } else {
+			}
+			
+			$_SESSION['intended_url'] = FULL_URL; 
+			header("Location: " . ROOT . "login");
+			die;
+ 
+		}else{
+			 
+	 		if(isset($_SESSION['user_url']))
+			{
+				$arr = false;
+				$arr['url'] = $_SESSION['user_url'];
+				$query = "select * from users where url_address = :url limit 1";
 
-            if (isset($_SESSION['user_url'])) {
-                $arr = false;
-                $arr['url'] = $_SESSION['user_url'];
-                $query = "select * from users where url_address = :url limit 1";
+				$result = $db->read($query,$arr);
+				
+				if(is_array($result))
+				{
+					return $result[0];
+				}
+			}
+			//se o user url não está ok tem que redirecionar para a página login
+			if($redirect){
+				$_SESSION['intended_url'] = FULL_URL; 
+				header("Location: " . ROOT . "login");
+				die;
+			}
+		}
 
-                $result = $db->read($query, $arr);
+		return false;
 
-                if (is_array($result)) {
-                    return $result[0];
-                }
-            }
-            //se o user url não está ok tem que redirecionar para a página login
-            if ($redirect) {
-                header("Location: " . ROOT . "login");
-                die;
-            }
-        }
-        return false;
-    }
+	}
 
 
     public function logout()

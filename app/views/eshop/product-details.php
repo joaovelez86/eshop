@@ -1,4 +1,3 @@
-<!--Faz roteamento para o header! app>views>header.php-->
 <?php $this->view("header", $data); ?>
 
 <section>
@@ -151,9 +150,9 @@
 
 				</div>
 			</div>
-			<!-- start product -->
+			<!--start product-->
 			<div class="col-sm-9 padding-right">
-			<?php if ($ROW) : ?>
+				<?php if ($ROW) : ?>
 					<div class="product-details">
 						<!--product-details-->
 						<div class="col-sm-5">
@@ -169,16 +168,13 @@
 										<a href=""><img src="<?= ROOT . $ROW->image ?>" alt=""></a>
 									</div>
 									<div class="item">
-										<a href=""><img src="<?= ROOT . $ROW->image2 ?>images/product-details/similar1.jpg" alt=""></a>
-
+										<a href=""><img src="<?= ROOT . $ROW->image2 ?>" alt=""></a>
 									</div>
 									<div class="item">
-										<a href=""><img src="<?= ROOT . $ROW->image3 ?>images/product-details/similar1.jpg" alt=""></a>
-
+										<a href=""><img src="<?= ROOT . $ROW->image3 ?>" alt=""></a>
 									</div>
 									<div class="item">
-										<a href=""><img src="<?= ROOT . $ROW->image4 ?>images/product-details/similar1.jpg" alt=""></a>
-
+										<a href=""><img src="<?= ROOT . $ROW->image4 ?>" alt=""></a>
 									</div>
 
 								</div>
@@ -201,7 +197,7 @@
 								<p>Web ID: 1089772</p>
 								<img src="images/product-details/rating.png" alt="" />
 								<span>
-									<span><?= $ROW->price ?>€</span>
+									<span>US $<?= $ROW->price ?></span>
 									<label>Quantity:</label>
 									<input type="text" value="3" />
 									<button type="button" class="btn btn-fefault cart">
@@ -211,7 +207,7 @@
 								</span>
 								<p><b>Availability:</b> In Stock</p>
 								<p><b>Condition:</b> New</p>
-								<p><b>Brand:</b> E-SHOP</p>
+								<p><b>Brand:</b> E-SHOPPER</p>
 								<a href=""><img src="images/product-details/share.png" class="share img-responsive" alt="" /></a>
 							</div>
 							<!--/product-information-->
@@ -504,15 +500,16 @@
 					</div>
 					<!--/recommended_items-->
 
-				</div>
-				<!-- end product -->
-			<?php else : ?>
-				<div style="padding:1em;background-color:grey;color:white;margin:1em;text-align:center;"><h2>That product was not found</h2></div>
-			<?php endif; ?>
+					<!--end product-->
+				<?php else : ?>
+					<div style="padding: 1em;background-color: grey;color:white;margin:1em;text-align: center;">
+						<h2>That product was not found</h2>
+					</div>
+				<?php endif; ?>
+			</div>
 
 		</div>
 	</div>
 </section>
 
-<!--Faz roteamento para o footer
 <?php $this->view("footer", $data); ?>

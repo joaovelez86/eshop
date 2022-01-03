@@ -20,7 +20,7 @@
               </li>
 
               <li class="sub-menu">
-                  <a href="<?= ROOT ?>admin/products">
+              <a <?=(isset($current_page) && $current_page == "products") ? ' class="active" ':''; ?> href="<?=ROOT?>admin/products" >
                       <i class="fa fa-barcode"></i>
                       <span>Products</span>
                   </a>
@@ -30,7 +30,7 @@
               </li>
 
               <li class="sub-menu">
-                  <a href="<?= ROOT ?>admin/categories">
+              <a <?=(isset($current_page) && $current_page == "categories") ? ' class="active" ':''; ?> href="<?=ROOT?>admin/categories" >
                       <i class="fa fa-list-alt"></i>
                       <span>Categories</span>
                   </a>
@@ -53,13 +53,7 @@
                   </a>
               </li>
 
-              <li class="sub-menu">
-                  <a <?= (isset($current_page) && $current_page == "blogs") ? ' class="active" ' : ''; ?> href="<?= ROOT ?>admin/blogs">
-                      <i class="fa fa-email-o"></i>
-                      <span>Blog Posts</span>
-                  </a>
-              </li>
-
+        <!--
               <li class="sub-menu">
                   <a <?= (isset($current_page) && $current_page == "settings") ? ' class="active" ' : ''; ?> href="<?= ROOT ?>admin/settings">
                       <i class="fa fa-cogs"></i>
@@ -73,7 +67,7 @@
                       <li><a href="<?= ROOT ?>admin/settings/socials">Social links / Contacts</a></li>
                   </ul>
               </li>
-
+-->
               <li class="sub-menu">
                   <a <?= (isset($current_page) && $current_page == "users") ? ' class="active" ' : ''; ?> href="<?= ROOT ?>admin/users">
                       <i class="fa fa-user"></i>

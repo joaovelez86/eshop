@@ -11,6 +11,8 @@ class App
     {
         $url = $this->parseURL();
 
+        $url[0] = str_replace("-","_",$url[0]);
+
         /*se o ficheiro existir converte to lowercase e faz concatenação para substituir
         o controller do url (neste caso o "home" [0] ) e depois destroi o url com unset() */
         if (file_exists("../app/controllers/" . strtolower($url[0]) . ".php")) {

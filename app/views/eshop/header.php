@@ -43,8 +43,6 @@
 						<div class="contactinfo">
 							<ul class="nav nav-pills">
 
-								<li><a href="#"><i class="fa fa-phone"></i> +00351 969597640</a></li>
-								<li><a href="#"><i class="fa fa-envelope"></i> info@domain.com</a></li>
 								<?php if (isset($data['user_data'])) : ?>
 									<li><a href="#"><i class="fa fa-user"></i> <?= $data['user_data']->full_name ?> </a></li>
 								<?php endif; ?>
@@ -66,31 +64,9 @@
 				<div class="row">
 					<div class="col-sm-4">
 						<div class="logo pull-left">
-							<a href="index.html"><img src="<?php echo ASSETS . THEME ?>images/home/logo.png" alt="" /></a>
+							<a href="<?= ROOT ?>"><img src="<?= ASSETS . THEME ?>images/home/logo.png" alt="" /></a>
 						</div>
-						<div class="btn-group pull-right">
-							<div class="btn-group">
-								<button type="button" class="btn btn-default dropdown-toggle usa" data-toggle="dropdown">
-									USA
-									<span class="caret"></span>
-								</button>
-								<ul class="dropdown-menu">
-									<li><a href="#">Canada</a></li>
-									<li><a href="#">UK</a></li>
-								</ul>
-							</div>
 
-							<div class="btn-group">
-								<button type="button" class="btn btn-default dropdown-toggle usa" data-toggle="dropdown">
-									DOLLAR
-									<span class="caret"></span>
-								</button>
-								<ul class="dropdown-menu">
-									<li><a href="#">Canadian Dollar</a></li>
-									<li><a href="#">Pound</a></li>
-								</ul>
-							</div>
-						</div>
 					</div>
 					<div class="col-sm-8">
 						<div class="shop-menu pull-right">
@@ -99,8 +75,8 @@
 									<li><a href="<?= ROOT ?>profile"><i class="fa fa-user"></i> Account</a></li>
 								<?php endif; ?>
 								<li><a href="#"><i class="fa fa-star"></i> Wishlist</a></li>
-								<li><a href="<?=ROOT?>checkout"><i class="fa fa-crosshairs"></i> Checkout</a></li>
-								<li><a href="<?=ROOT?>cart"><i class="fa fa-shopping-cart"></i> Cart</a></li>
+								<li><a href="<?= ROOT ?>checkout"><i class="fa fa-crosshairs"></i> Checkout</a></li>
+								<li><a href="<?= ROOT ?>cart"><i class="fa fa-shopping-cart"></i> Cart</a></li>
 
 								<?php if (isset($data['user_data'])) : ?>
 									<li><a href="<?= ROOT ?>logout"><i class="fa fa-lock"></i> Logout</a></li>
@@ -130,31 +106,16 @@
 						</div>
 						<div class="mainmenu pull-left">
 							<ul class="nav navbar-nav collapse navbar-collapse">
-								<li><a href="<?=ROOT?>index" class="active">Home</a></li>
-								<li class="dropdown"><a href="#">Shop<i class="fa fa-angle-down"></i></a>
-									<ul role="menu" class="sub-menu">
-										<li><a href="<?=ROOT?>shop">Products</a></li>
-										<li><a href="<?=ROOT?>product-details">Product Details</a></li>
-										<li><a href="<?=ROOT?>checkout">Checkout</a></li>
-										<li><a href="<?=ROOT?>cart">Cart</a></li>
-										<li><a href="<?=ROOT?>login">Login</a></li>
-									</ul>
-								</li>
-
-								<li><a href="<?=ROOT?>404">404</a></li>
-								<li><a href="<?=ROOT?>contact-us">Contact</a></li>
+								<li><a href="<?= ROOT ?>index" class="<?= $page_title == "Home" ? "active" : ""; ?>">Home</a></li>
+								<li class="dropdown"><a href="<?= ROOT ?>shop" class="<?= $page_title == "Shop" ? "active" : ""; ?>">Shop</a></li>
+								<li><a href="<?= ROOT ?>contact-us" class="<?= $page_title == "Contact-us" ? "active" : ""; ?>">Contact</a></li>
 							</ul>
 						</div>
 					</div>
-					<div class="col-sm-3">
-						<div class="search_box pull-right">
-							<input type="text" placeholder="Search" />
-						</div>
-					</div>
+					
 				</div>
 			</div>
-		</div>
-		<!--/header-bottom-->
+			<!--/header-bottom-->
 	</header>
 	<!--/header-->
 

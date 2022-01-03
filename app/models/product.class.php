@@ -1,14 +1,14 @@
-<?php 
+<?php
 
-Class Product
+class Product
 {
 
 
-	public function create($DATA,$FILES)
+	public function create($DATA, $FILES, $image_class = null)
 	{
 		$_SESSION['error'] = "";
 
-		$DB = Database::newInstance(); 
+		$DB = Database::newInstance();
 		$arr['description'] = ucwords($DATA->description);
 		$arr['quantity'] 	= ($DATA->quantity);
 		$arr['category'] 	= ($DATA->category);
@@ -17,19 +17,16 @@ Class Product
 		$arr['date'] 		= date("d/m/y H:i");
 		$arr['user_url'] 	= $_SESSION['user_url'];
 		$arr['permalink'] 		= $this->str_to_url($DATA->description);
- 
-		if(!preg_match("/^[a-zA-Z 0-9._\-,]+$/", trim($arr['description'])))
-		{
+
+		if (!preg_match("/^[a-zA-Z 0-9._\-,]+$/", trim($arr['description']))) {
 			$_SESSION['error'] .= "Please enter a valid description for this product<br>";
 		}
 
-		if(!is_numeric($arr['quantity']))
-		{
+		if (!is_numeric($arr['quantity'])) {
 			$_SESSION['error'] .= "Please enter a valid quantity<br>";
 		}
 
-		if(!is_numeric($arr['category']))
-		{
+		if (!is_numeric($arr['category'])) {
 			$_SESSION['error'] .= "Please enter a valid category<br>";
 		}
 		/*
@@ -39,18 +36,17 @@ Class Product
 		}
 		*/
 
-		if(!is_numeric($arr['price']))
-		{
+		if (!is_numeric($arr['price'])) {
 			$_SESSION['error'] .= "Please enter a valid price<br>";
 		}
 
 		//permalink unico
 		$permalink_arr['permalink'] = $arr['permalink'];
 		$query = "select permalink from products where permalink = :permalink limit 1";
-		$check = $DB->read($query,$permalink_arr);
+		$check = $DB->read($query, $permalink_arr);
 
-		if($check){
-			$arr['permalink'] .= "-" . rand(0,99999);
+		if ($check) {
+			$arr['permalink'] .= "-" . rand(0, 99999);
 		}
 
 		$arr['image'] = "";
@@ -62,73 +58,65 @@ Class Product
 		$size = 10;
 		$size = ($size * 1024 * 1024);
 
-	 	$folder = "uploads/";
+		$folder = "uploads/";
 
-	 	if(!file_exists($folder))
-	 	{
-	 		mkdir($folder,0777,true);
-	 	}
+		if (!file_exists($folder)) {
+			mkdir($folder, 0777, true);
+		}
 
-		//check for files
+		//checka por files e faz um re-size das fotos com tamanho escolhido para a $destination (public>uploads)
 		foreach ($FILES as $key => $img_row) {
 			# code...
-			if($img_row['error'] == 0 && in_array($img_row['type'], $allowed))
-			{
-				if($img_row['size'] < $size)
-				{
-					$destination = $folder . $img_row['name'];
+			if ($img_row['error'] == 0 && in_array($img_row['type'], $allowed)) {
+
+				if ($img_row['size'] < $size) {
+
+					$destination = $folder . $image_class->generate_filename(60) . ".jpg";
 					move_uploaded_file($img_row['tmp_name'], $destination);
 					$arr[$key] = $destination;
-					
-					//$image_class->resize_image($destination,$destination,1500,1500);
-				}else
-				{
+
+					$image_class->resize_image($destination, $destination, 1500, 1500);
+				} else {
 					$_SESSION['error'] .= $key . " is bigger than required size<br>";
 				}
 			}
-
 		}
 
-		if(!isset($_SESSION['error']) || $_SESSION['error'] == ""){
+		if (!isset($_SESSION['error']) || $_SESSION['error'] == "") {
 			$query = "insert into products (description,quantity,category,price,date,user_url,image,image2,image3,image4,permalink) values (:description,:quantity,:category,:price,:date,:user_url,:image,:image2,:image3,:image4,:permalink)";
-			$check = $DB->write($query,$arr);
+			$check = $DB->write($query, $arr);
 
-			if($check){
+			if ($check) {
 				return true;
 			}
 		}
 
 		return false;
-
 	}
 
-	public function edit($data,$FILES)
+	public function edit($data, $FILES, $image_class = null)
 	{
-	 
- 		$arr['id'] = $data->id;
+
+		$arr['id'] = $data->id;
 		$arr['description'] = $data->description;
 		$arr['quantity'] = $data->quantity;
 		$arr['category'] = $data->category;
 		$arr['price'] = $data->price;
 		$images_string = "";
 
-		if(!preg_match("/^[a-zA-Z 0-9._\-,]+$/", trim($arr['description'])))
-		{
+		if (!preg_match("/^[a-zA-Z 0-9._\-,]+$/", trim($arr['description']))) {
 			$_SESSION['error'] .= "Please enter a valid description for this product<br>";
 		}
 
-		if(!is_numeric($arr['quantity']))
-		{
+		if (!is_numeric($arr['quantity'])) {
 			$_SESSION['error'] .= "Please enter a valid quantity<br>";
 		}
 
-		if(!is_numeric($arr['category']))
-		{
+		if (!is_numeric($arr['category'])) {
 			$_SESSION['error'] .= "Please enter a valid category<br>";
 		}
 
-		if(!is_numeric($arr['price']))
-		{
+		if (!is_numeric($arr['price'])) {
 			$_SESSION['error'] .= "Please enter a valid price<br>";
 		}
 
@@ -136,40 +124,38 @@ Class Product
 		$size = 10;
 		$size = ($size * 1024 * 1024);
 
-	 	$folder = "uploads/";
+		$folder = "uploads/";
 
-	 	if(!file_exists($folder))
-	 	{
-	 		mkdir($folder,0777,true);
-	 	}
+		if (!file_exists($folder)) {
+			mkdir($folder, 0777, true);
+		}
 
-		 
-		//check for files
+
+		//checka por files
 		foreach ($FILES as $key => $img_row) {
 			# code...
-			if($img_row['error'] == 0 && in_array($img_row['type'], $allowed))
-			{
-				if($img_row['size'] < $size)
-				{
-					$destination = $folder . $img_row['name'];
+			if ($img_row['error'] == 0 && in_array($img_row['type'], $allowed)) {
+
+				if ($img_row['size'] < $size) {
+
+					$destination = $folder . $image_class->generate_filename(60) . ".jpg";
 					move_uploaded_file($img_row['tmp_name'], $destination);
 					$arr[$key] = $destination;
-					
-					//$image_class->resize_image($destination,$destination,1500,1500);
-				}else
-				{
+					$image_class->resize_image($destination, $destination, 1500, 1500);
+
+					$images_string .= "," . $key . " = :" . $key;
+				} else {
 					$_SESSION['error'] .= $key . " is bigger than required size<br>";
 				}
 			}
-
 		}
 
-		if(!isset($_SESSION['error']) || $_SESSION['error'] == ""){
-			
-			$DB = Database::newInstance();
-	 		$query = "update products set description = :description,quantity = :quantity,category = :category,price = :price $images_string where id = :id limit 1";
+		if (!isset($_SESSION['error']) || $_SESSION['error'] == "") {
 
-			$DB->write($query,$arr);
+			$DB = Database::newInstance();
+			$query = "update products set description = :description,quantity = :quantity,category = :category,price = :price $images_string where id = :id limit 1";
+
+			$DB->write($query, $arr);
 		}
 	}
 
@@ -187,65 +173,65 @@ Class Product
 
 		$DB = Database::newInstance();
 		return $DB->read("select * from products order by id desc");
-
 	}
 
-	public function make_table($cats,$model = null)
+	public function make_table($cats, $model = null)
 	{
 
 		$result = "";
-		if(is_array($cats)){
+		if (is_array($cats)) {
 			foreach ($cats as $cat_row) {
 				# code...
- 
- 				$edit_args = $cat_row->id.",'".$cat_row->description."'";
 
- 				$info = array();
- 				$info['id'] = $cat_row->id;
- 				$info['description'] = $cat_row->description;
- 				$info['quantity'] = $cat_row->quantity;
- 				$info['price'] = $cat_row->price;
- 				$info['category'] = $cat_row->category;
- 				//$info['category'] = $cat_row->brand_name;
- 				$info['image'] = $cat_row->image;
- 				$info['image2'] = $cat_row->image2;
- 				$info['image3'] = $cat_row->image3;
- 				$info['image4'] = $cat_row->image4;
+				$edit_args = $cat_row->id . ",'" . $cat_row->description . "'";
 
- 				$info = str_replace('"', "'", json_encode($info));
+				$info = array();
+				$info['id'] = $cat_row->id;
+				$info['description'] = $cat_row->description;
+				$info['quantity'] = $cat_row->quantity;
+				$info['price'] = $cat_row->price;
+				$info['category'] = $cat_row->category;
+				//$info['category'] = $cat_row->brand_name;
+				$info['image'] = $cat_row->image;
+				$info['image2'] = $cat_row->image2;
+				$info['image3'] = $cat_row->image3;
+				$info['image4'] = $cat_row->image4;
 
- 				//$one_cat = $model->get_one($cat_row->category);
- 				$result .= "<tr>";
-				
-					$result .= '
-						<td><a href="basic_table.html#">'.$cat_row->id.'</a></td>
-						<td><a href="basic_table.html#">'.$cat_row->description.'</a></td>
-						<td><a href="basic_table.html#">'.$cat_row->quantity.'</a></td>
-						<td><a href="basic_table.html#">'.$cat_row->category.'</a></td>
-						<td><a href="basic_table.html#">'.$cat_row->price.'</a></td>
-						<td><a href="basic_table.html#">'.date("d/m/y H:i",strtotime($cat_row->date)).'</a></td>
-						<td><a href="basic_table.html#"><img src="'.ROOT . $cat_row->image.'" style="width:70px; height:70px;" /></a></td>
+				$info = str_replace('"', "'", json_encode($info));
+
+				//$one_cat = $model->get_one($cat_row->category);
+				$result .= "<tr>";
+
+				$result .= '
+						<td><a href="basic_table.html#">' . $cat_row->id . '</a></td>
+						<td><a href="basic_table.html#">' . $cat_row->description . '</a></td>
+						<td><a href="basic_table.html#">' . $cat_row->quantity . '</a></td>
+						<td><a href="basic_table.html#">' . $cat_row->category . '</a></td>
+						<td><a href="basic_table.html#">' . $cat_row->price . '</a></td>
+						<td><a href="basic_table.html#">' . date("d/m/y H:i", strtotime($cat_row->date)) . '</a></td>
+						<td><a href="basic_table.html#"><img src="' . ROOT . $cat_row->image . '" style="width:70px; height:70px;" /></a></td>
 	                  <td></td>
 	                  <td>
 	                      
-	                      <button info="'.$info.'" onclick="show_edit_product('.$edit_args.',event)" class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i></button>
-	                      <button onclick="delete_row('.$cat_row->id.')" class="btn btn-danger btn-xs"><i class="fa fa-trash-o "></i></button>
+	                      <button info="' . $info . '" onclick="show_edit_product(' . $edit_args . ',event)" class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i></button>
+	                      <button onclick="delete_row(' . $cat_row->id . ')" class="btn btn-danger btn-xs"><i class="fa fa-trash-o "></i></button>
 	                  </td>
 					';
-						
+
 				$result .= "</tr>";
 			}
 		}
 
 		return $result;
 	}
- 
-		public function str_to_url($url){
-			$url = preg_replace('~[^\\pL0-9_]+~u', '-', $url);
-			$url = trim($url, "-");
-			$url = iconv("utf-8", "us-ascii//TRANSLIT", $url);
-			$url = strtolower($url);
-			$url = preg_replace('~[^-a-z0-9_]+~','',$url);
-			return $url;
-		}
+
+	public function str_to_url($url)
+	{
+		$url = preg_replace('~[^\\pL0-9_]+~u', '-', $url);
+		$url = trim($url, "-");
+		$url = iconv("utf-8", "us-ascii//TRANSLIT", $url);
+		$url = strtolower($url);
+		$url = preg_replace('~[^-a-z0-9_]+~', '', $url);
+		return $url;
+	}
 }

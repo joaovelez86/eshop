@@ -5,7 +5,10 @@ class Controller
     public function view($path, $data = [])
     {
         //Importa variáveis para a tabela de símbolos a partir de um array
-        extract($data);
+        if (is_array($data)) {
+            extract($data);
+        }
+  
        
 
         //caso o file_exists/$path mostra a view e se não mostrar mostra o 404.php
@@ -22,7 +25,7 @@ class Controller
         //caso o file_exists/$model mostra o models e retorna new model ou então retorna falso (se algo não correr bem)
         if (file_exists("../app/models/" .strtolower($model)  . ".class.php")) {
 
-            include "../app/models/" . strtolower($model) . ".class.php";
+            include_once "../app/models/" . strtolower($model) . ".class.php";
 
             return $a = new $model();
         }

@@ -50,14 +50,28 @@ class Category
     }
 
     public function get_one($id)
-	{
-		$id = (int)$id;
+    {
+        $id = (int)$id;
 
-		$DB = Database::newInstance();
-		$data = $DB->read("select * from categories where id = '$id' limit 1");
-		return $data[0];
-	}
+        $DB = Database::newInstance();
+        $data = $DB->read("select * from categories where id = '$id' limit 1");
+        return $data[0];
+    }
 
+    public function get_one_by_name($full_name)
+    {
+
+        $full_name = addslashes($full_name);
+
+        $DB = Database::newInstance();
+        $data = $DB->read("select * from categories where category like :full_name limit 1", ["full_name" => $full_name]);
+
+        if (is_array($data)) {
+            $DB->write("update categories set views = views + 1 where id = :id limit 1", ["id" => $data[0]->id]);
+        }
+
+        return $data[0];
+    }
 
 
     function make_table($cats)
@@ -71,7 +85,7 @@ class Category
                 $cat_row->disabled = $cat_row->disabled ? "Disabled" : "Enabled";
 
                 $args = $cat_row->id . ",'" . $cat_row->disabled . "'";
-                $edit_args = $cat_row->id . ",'" . $cat_row->category . "',".$cat_row->parent;
+                $edit_args = $cat_row->id . ",'" . $cat_row->category . "'," . $cat_row->parent;
                 $parent = "";
 
                 foreach ($cats as $cat_row2) {
@@ -84,7 +98,7 @@ class Category
 
                 $result .= '
                     <td><a href="basic_table.html#">' . $cat_row->category . '</a></td>
-                    <td><a href="basic_table.html#">' . $parent. '</a></td>
+                    <td><a href="basic_table.html#">' . $parent . '</a></td>
                     <td><span onclick="disable_row(' . $args . ')" class="label label-info label-mini" style="cursor:pointer;background-color:' . $color . ';">' . $cat_row->disabled . '</span></td>
                     <td>..
 

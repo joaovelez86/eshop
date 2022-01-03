@@ -4,6 +4,7 @@ Class Product_details extends Controller
     public function index($permalink)
     {
         $permalink = esc($permalink);
+        
         $User = $this->load_model('User');
         $user_data = $User->check_login();
         
