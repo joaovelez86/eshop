@@ -1,13 +1,13 @@
-<?php
-//cria esta function para usar em toda a app
+<?php 
+
+
 function show($data)
 {
-    echo "<pre>";
-    print_r($data);
-    echo "</pre>";
+	echo "<pre>";
+	print_r($data);
+	echo "</pre>";
 }
 
-//se existir erros faz echo ao utilizador e a seguir faz unset da _SESSION 
 function check_error()
 {
 
@@ -18,8 +18,8 @@ function check_error()
 	}
 }
 
-//cria esta function para usar em toda a app
-function esc($data){
+function esc($data)
+{
 	return addslashes($data);
 }
 
@@ -155,3 +155,9 @@ function get_payment_total(){
 
 	return 0;
 }
+
+
+
+
+
+

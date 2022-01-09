@@ -1,9 +1,11 @@
-<?php
+<?php 
+
 Class Home extends Controller
 {
-    public function index()
-    {
-      //pagination formula
+
+	public function index()
+	{
+		//pagination formula
 		$limit = 10;
 		$offset = Page::get_offset($limit);
 
@@ -13,7 +15,7 @@ Class Home extends Controller
 			$search = true;
 		}
  
-		//checka se faz search
+		//check if its a search
 		if(isset($_GET['find']))
 		{
 			$find = addslashes($_GET['find']);
@@ -40,7 +42,8 @@ Class Home extends Controller
 				$ROWS = $DB->read("select * from products where description like :description  limit $limit offset $offset ",$arr);
 			}else{
 				
-				//faz advanced search e generate a search query
+				//advanced search
+				//generate a search query
 				$query = Search::make_query($_GET,$limit,$offset);
 				$ROWS = $DB->read($query);
 			}
@@ -51,7 +54,7 @@ Class Home extends Controller
 
 		if($ROWS){
 			foreach ($ROWS as $key => $row) {
-				
+				# code...
 				$ROWS[$key]->image = $image_class->get_thumb_post($ROWS[$key]->image);
 			}
 		}
@@ -65,7 +68,7 @@ Class Home extends Controller
 			$Slider_ROWS[$i] = $DB->read("select * from products where rand() limit 3");
 			if($Slider_ROWS[$i]){
 				foreach ($Slider_ROWS[$i] as $key => $row) {
-				
+					# code...
 					$Slider_ROWS[$i][$key]->image = $image_class->get_thumb_post($Slider_ROWS[$i][$key]->image);
 				}
 			}
@@ -78,7 +81,7 @@ Class Home extends Controller
 		$data['categories'] = $category->get_all();
 
 
-		//get products 
+		//get products for lower segment
 		$data['segment_data'] = $this->get_segment_data($DB,$data['categories'],$image_class);
 
 		//get all slider content
@@ -87,7 +90,7 @@ Class Home extends Controller
 
 		if($data['slider']){
 			foreach ($data['slider'] as $key => $row) {
-
+				# code...
 				$data['slider'][$key]->image = $image_class->get_thumb_post($data['slider'][$key]->image,484,441);
 			}
 		}
@@ -103,6 +106,7 @@ Class Home extends Controller
 		$mycats = array();
 		$num = 0;
 		foreach ($categories as $cat) {
+			// code...
 
 			$arr['id'] = $cat->id;
 			$ROWS = $DB->read("select * from products where category = :id order by rand() limit 5",$arr);
@@ -112,8 +116,9 @@ Class Home extends Controller
 				$cat->category = str_replace(" ", "_", $cat->category);
 				$cat->category = preg_replace("/\W+/", "", $cat->category);
 
-				//faz crop das images
+				//crop images
 				foreach ($ROWS as $key => $row) {
+					# code...
 					$ROWS[$key]->image = $image_class->get_thumb_post($ROWS[$key]->image);
 				}
 

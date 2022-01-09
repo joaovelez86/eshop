@@ -1,50 +1,45 @@
-<?php 
+<?php
 
-Class Message
+class Message
 {
 
 	protected $error = array();
 	public function create($DATA)
 	{
 		$this->error = array();
-		$DB = Database::newInstance(); 
-		$arr['full_name'] 	= ucwords($DATA['full_name']);
+		$DB = Database::newInstance();
+		$arr['name'] 	= ucwords($DATA['name']);
 		$arr['email'] 	= $DATA['email'];
 		$arr['subject'] = $DATA['subject'];
 		$arr['message'] = $DATA['message'];
-		$arr['date'] = date("d/m/y H:i");
+		$arr['date'] = date("Y-m-d H:i:s");
 
-		if(!preg_match("/^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$/u", trim($arr['full_name'])))
-		{
+		if (!preg_match("/^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$/u", trim($arr['name']))) {
 			$this->error[] = "Only letters and spaces allowed in name";
 		}
 
-		if(!preg_match("/^[a-zA-Z ]+$/", trim($arr['subject'])))
-		{
+		if (!preg_match("/^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$/u", trim($arr['subject']))) {
 			$this->error[] = "Only letters and spaces allowed in subject";
 		}
 
-		if(!filter_var($arr['email'],FILTER_VALIDATE_EMAIL))
-		{
+		if (!filter_var($arr['email'], FILTER_VALIDATE_EMAIL)) {
 			$this->error[] = "Please enter a valid email";
 		}
 
-		if(empty($arr['message']))
-		{
+		if (empty($arr['message'])) {
 			$this->error[] = "Please enter a valid message";
 		}
 
-		if(count($this->error) == 0){
-			$query = "insert into contact_us (full_name,email,subject,message,date) values (:full_name,:email,:subject,:message,:date)";
-			$check = $DB->write($query,$arr);
+		if (count($this->error) == 0) {
+			$query = "insert into contact_us (name,email,subject,message,date) values (:name,:email,:subject,:message,:date)";
+			$check = $DB->write($query, $arr);
 
-			if($check){
+			if ($check) {
 				return true;
 			}
 		}
 
 		return $this->error;
-
 	}
 
 
@@ -75,7 +70,5 @@ Class Message
 
 		$DB = Database::newInstance();
 		return $DB->read("select * from contact_us order by id desc limit $limit offset $offset");
-
 	}
-
 }

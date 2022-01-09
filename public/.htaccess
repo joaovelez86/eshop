@@ -1,4 +1,4 @@
-
+RewriteEngine On
 <FilesMatch "\.(htm|html|css|js|php)$">
 AddDefaultCharset UTF-8
 </FilesMatch>

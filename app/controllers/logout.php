@@ -1,9 +1,15 @@
-<?php
-class Logout extends Controller
+<?php 
+
+Class Logout extends Controller
 {
-    public function index()
-    {
-        $User = $this->load_model('User');
-        $User->logout();
-    }
+
+	public function index()
+	{
+		
+		$User = $this->load_model('User');
+ 		$User->logout();
+ 		
+	}
+
+
 }
